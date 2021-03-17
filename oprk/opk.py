@@ -3,6 +3,8 @@ import pandas as pd
 
 st.set_page_config(
     page_title="One Place Foodie",
+    layout="wide",
+    initial_sidebar_state="expanded",
     )
 
 @st.cache
@@ -19,6 +21,10 @@ pick_district = st.sidebar.selectbox(
         'Pick Location:',
         df['district_en'].unique())
 
-df = df[df.district_en == pick_district]
+pick_cuisine = st.sidebar.selectbox(
+        'Pick Cuisine:',
+        df['cuisine'].unique())
+
+df = df.loc[(df['district_en'] == pick_district) & (df['cuisine'] == pick_cuisine)]
 
 st.write(df)
