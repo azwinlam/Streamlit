@@ -1,0 +1,4 @@
+Sector_Date_GMT,Flt_No,Sector,Reg,Block_Time,GMT_off-blk,GMT_airbourne,GMT_landing,GMT_On-blk,Take_Off,Land,Auto_land,Commander
+2012-09-18,9331,HKG HKG,B-HSO,3:38,0:12,0:43,3:47,3:50,0,0,N,Commander1
+2012-09-20,206,HKG PNH,B-HTI,2:22,0:41,0:57,2:57,3:03,0,0,N,Commander2
+2012-09-20,207,PNH HKG,B-HTI,2:26,4:10,4:19,6:30,6:36,0,0,N,Commander3
