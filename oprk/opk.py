@@ -31,8 +31,7 @@ cuisine_array = df['cuisine'].unique()
 cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
 
 pick_cuisine = st.sidebar.selectbox(
-        'Pick Cuisine:',
-        df['cuisine'].unique())
+        'Pick Cuisine:', cuisine_array)
 
 if pick_district == "All Cuisine" and pick_cuisine == "All Cuisine":
     df = df
@@ -41,4 +40,5 @@ if pick_district == "All District":
 else:
     df = df.loc[(df.district_en.str.contains(pick_district)) & (df['cuisine'] == pick_cuisine)]
 
+st.header(f"There are {df.shape[0]} restaurants in {pick_district} for {pick_cuisine})
 st.write(df)
