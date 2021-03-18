@@ -19,7 +19,6 @@ st.header("")
 df = default_csv()
 
 district_array = np.sort(df.district_en.unique())
-district_array
 
 all_district = []
 for i in district_array:
