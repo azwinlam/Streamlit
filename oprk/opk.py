@@ -35,7 +35,7 @@ pick_cuisine = st.sidebar.selectbox(
 
 if pick_district == "All District" and pick_cuisine == "All Cuisine":
     df = default_csv()
-if pick_district == "All District":
+if pick_district == "All District" and pick_cuisine != "All Cuisine":
     df = df.loc[df['cuisine'] == pick_cuisine]
 if pick_district != "All District" and pick_cuisine == "All Cuisine":
     df = df.loc[(df.district_en.str.contains(pick_district))]
