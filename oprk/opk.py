@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 st.set_page_config(
-    page_title="One Place Foodie",
+    page_title="One Place Foodie!",
     layout="wide",
     initial_sidebar_state="expanded",
     )
