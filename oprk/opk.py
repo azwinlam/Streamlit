@@ -19,12 +19,7 @@ st.header("")
 df = default_csv()
 
 district_array = np.sort(df.district_en.unique())
-
-all_district = []
-for i in district_array:
-    all_district.append(i)
-show_all = " ".join(all_district)
-district_array = np.insert(district_array, 0, values=show_all)
+district_array = np.insert(district_array, 0, values="All")
 
 pick_district = st.sidebar.selectbox(
         'Pick Location:', district_array)
@@ -33,6 +28,9 @@ pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:',
         df['cuisine'].unique())
 
-df = df.loc[(df.district_en.str.contains(pick_district)) & (df['cuisine'] == pick_cuisine)]
+if pick_district == "All"
+    df = df.loc[df['cuisine'] == pick_cuisine]
+else:
+    df = df.loc[(df.district_en.str.contains(pick_district)) & (df['cuisine'] == pick_cuisine)]
 
 st.write(df)
