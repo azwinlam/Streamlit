@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import requests
 import json
+import pydeck as pdk
 
 token = "pk.eyJ1IjoiYXp3aW5sYW0iLCJhIjoiY2ttZWZ1OXlmMGhneTJvbnpmbjN0cGlncCJ9.F9dG4cOF6weMIwUx1ajL6A"
 
@@ -14,7 +15,7 @@ st.set_page_config(
 
 @st.cache
 def default_csv():
-    return pd.read_csv("temp_df.csv", index_col=0, header=0)
+    return pd.read_csv("temp_df_(latlon).csv", index_col=0, header=0)
 
 st.title('Welcome to One Place Foodie!v3')
 st.header("By Trio")
@@ -51,9 +52,7 @@ st.write(df_temp)
 
 rest_num = st.number_input(label="Input Restaurant Number",value=int(df_temp.index[0][4:]),step = 1)
 
-temp = df[df.index==f"rest{rest_num}"]
-
-st.write(temp)
+restaurant = df[df.index==f"rest{rest_num}"]
 
 price_d = {50: "Less than 50 HKD",
             51: "51-100 HKD", 
@@ -65,17 +64,45 @@ price_d = {50: "Less than 50 HKD",
 #Address Lat Lon lookup
 url = "https://www.als.ogcio.gov.hk/lookup?q="
 headers = {"Accept": 'application/json', "Accept-Language": 'en'}
-address = temp.add_en.values[0]
+address = restaurant.add_en.values[0]
 res = requests.get(url+address, headers=headers)
 
 geo = json.loads(res.text)
-lat = geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Latitude"]
-lon = geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Longitude"]
-geo_address = pd.DataFrame({"lat":float(lat), "lon":float(lon)}, index=None)
+lat = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Latitude"])
+lon = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Longitude"])
+geo_address = pd.DataFrame({"lat":[lat], "lon":[lon]}, index=None)
 
-st.write(f"Restraunt Name: {temp.name.values[0]}, {temp.name2.values[0]} ")
-st.write(f"Cuisine: {temp.cuisine_en.values[0]}")
-st.write(f"District: {temp.district_en.values[0]}")
-st.write(f"Address: {temp.add_en.values[0]}")
-st.write(f"Price: {price_d[temp.price.values[0]]}")
-st.map(geo_address)
+st.write(f"Restraunt Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
+st.write(f"Cuisine: {restaurant.cuisine_en.values[0]}")
+st.write(f"District: {restaurant.district_en.values[0]}")
+st.write(f"Address: {restaurant.add_en.values[0]}")
+st.write(f"Price: {price_d[restaurant.price.values[0]]}")
+
+st.map(geo_address,zoom=16)
+st.write(lat,lon)
+
+# st.pydeck_chart(pdk.Deck(
+#     map_style='mapbox://styles/mapbox/light-v9',
+#     initial_view_state=pdk.ViewState(
+#         latitude=lat,
+#         longitude=lon,
+#         zoom=16,
+#         pitch=50,
+#     ),
+#     layers=[
+#         pdk.Layer(
+#             'HexagonLayer',
+#             data=geo_address,
+#             elevation_scale=4,
+#             get_position="[lon,lat]",
+#             radius=10,
+#         ),
+#         pdk.Layer(
+#             "ScatterplotLayer",
+#             data=geo_address,
+#             get_position='[lon,lat]',
+#             get_color='[200,30,0,160]',
+#             get_radius=200
+#         ),
+#     ],
+# ))
