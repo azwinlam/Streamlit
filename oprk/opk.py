@@ -120,9 +120,12 @@ layer =[ pdk.Layer(
     )]
 view_state = pdk.ViewState(latitude=restaurant.lat.values[0], longitude=restaurant.lon.values[0], zoom=17, bearing=0, pitch=0)
 
-st.pydeck_chart(pdk.Deck(
-    layers=[layer], 
-    initial_view_state=view_state,
-    map_style='mapbox://styles/mapbox/light-v9',
-    tooltip={"text": "{name}\n{add_en}"},
-    ))
+try:
+    st.pydeck_chart(pdk.Deck(
+        layers=[layer], 
+        initial_view_state=view_state,
+        map_style='mapbox://styles/mapbox/light-v9',
+        tooltip={"text": "{name}\n{add_en}"},
+        ))
+except:
+    st.write("No address for this restaurant listing")
