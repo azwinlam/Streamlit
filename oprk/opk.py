@@ -10,7 +10,7 @@ st.set_page_config(
 
 @st.cache
 def default_csv():
-    return pd.read_csv("temp_df3.csv", index_col=0, header=0)
+    return pd.read_csv("temp_df.csv", index_col=0, header=0)
 
 st.title('Welcome to One Place Foodie!v3')
 st.header("By Trio")
@@ -36,11 +36,11 @@ pick_cuisine = st.sidebar.selectbox(
 if pick_district == "All District" and pick_cuisine == "All Cuisine":
     df = df.iloc[:,:]
 if pick_district == "All District" and pick_cuisine != "All Cuisine":
-    df = df.loc[df['cuisine'] == pick_cuisine]
+    df = df.loc[df.cuisine.str.contains(pick_cuisine)]
 if pick_district != "All District" and pick_cuisine == "All Cuisine":
     df = df.loc[(df.district_en.str.contains(pick_district))]
 if pick_district != "All District" and pick_cuisine != "All Cuisine":
-    df = df.loc[(df.district_en.str.contains(pick_district)) & (df['cuisine'] == pick_cuisine)]
+    df = df.loc[(df.district_en.str.contains(pick_district)) & (df.cuisine.str.contains(pick_cuisine))]
 
 st.header(f"There are {df.shape[0]} restaurants in {pick_district} for {pick_cuisine}")
 st.write(df)
