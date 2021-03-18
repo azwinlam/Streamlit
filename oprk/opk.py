@@ -19,6 +19,14 @@ st.header("")
 df = default_csv()
 
 district_array = np.sort(df.district_en.unique())
+district_array
+
+all_district = []
+for i in district_array:
+    all_district.append(i)
+show_all = " ".join(all_district)
+district_array = np.insert(district_array, 0, values=show_all)
+
 pick_district = st.sidebar.selectbox(
         'Pick Location:', district_array)
 
