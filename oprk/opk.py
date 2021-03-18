@@ -37,6 +37,8 @@ if pick_district == "All Cuisine" and pick_cuisine == "All Cuisine":
     df = df
 if pick_district == "All District":
     df = df.loc[df['cuisine'] == pick_cuisine]
+if pick_district != "All District" and pick_cuisine == "All Cuisine":
+    df = df.loc[(df.district_en.str.contains(pick_district))
 else:
     df = df.loc[(df.district_en.str.contains(pick_district)) & (df['cuisine'] == pick_cuisine)]
 
