@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 
 st.set_page_config(
     page_title="One Place Foodie",
@@ -11,7 +12,7 @@ st.set_page_config(
 def default_csv():
     return pd.read_csv("temp_df.csv", index_col=0, header=0)
 
-st.title('Welcome to OPK')
+st.title('Welcome to One Place Foodie')
 st.header("By Trio")
 st.header("")
 
@@ -23,7 +24,7 @@ pick_district = st.sidebar.selectbox(
 
 pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:',
-        df['cuisine'].unique())
+        df['cuisine'].unique().sort())
 
 df = df.loc[(df['district_en'] == pick_district) & (df['cuisine'] == pick_cuisine)]
 
