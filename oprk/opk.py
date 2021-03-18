@@ -18,9 +18,9 @@ st.header("")
 
 df = default_csv()
 
+district_array = np.sort(df.district_en.unique())
 pick_district = st.sidebar.selectbox(
-        'Pick Location:',
-        df['district_en'].unique())
+        'Pick Location:', district_array)
 
 pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:',
