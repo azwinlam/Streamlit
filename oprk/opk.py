@@ -17,7 +17,7 @@ st.set_page_config(
 def default_csv():
     return pd.read_csv("temp_df5.csv", index_col=0, header=0)
 
-st.title('Welcome to One Place Foodie!v3')
+st.title('Welcome to One Place Foodie! v4')
 st.header("By Trio")
 st.header("")
 
@@ -48,7 +48,7 @@ if pick_district != "All District" and pick_cuisine != "All Cuisine":
     df_temp = df.loc[(df.district_en.str.contains(pick_district)) & (df.cuisine_en.str.contains(pick_cuisine))]
 
 
-st.header(f"There are {df.shape[0]} restaurants in {pick_district} for {pick_cuisine}")
+st.header(f"There are {df_temp.shape[0]} restaurants in {pick_district} for {pick_cuisine}")
 
 try:
     st.write(df_temp)
@@ -67,15 +67,15 @@ price_d = {50: "Less than 50 HKD",
             801: "More than 801 HKD"}
 
 #Address Lat Lon lookup
-url = "https://www.als.ogcio.gov.hk/lookup?q="
-headers = {"Accept": 'application/json', "Accept-Language": 'en'}
-address = restaurant.add_en.values[0]
-res = requests.get(url+address, headers=headers)
+# url = "https://www.als.ogcio.gov.hk/lookup?q="
+# headers = {"Accept": 'application/json', "Accept-Language": 'en'}
+# address = restaurant.add_en.values[0]
+# res = requests.get(url+address, headers=headers)
 
-geo = json.loads(res.text)
-lat = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Latitude"])
-lon = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Longitude"])
-geo_address = pd.DataFrame({"lat":[lat], "lon":[lon]}, index=None)
+# geo = json.loads(res.text)
+# lat = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Latitude"])
+# lon = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Longitude"])
+geo_address = pd.DataFrame({"lat":[restaurant.lat.values[0]], "lon":[restaurant.lon.values[0]]}, index=None)
 
 st.write(f"Restraunt Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
 st.write(f"Cuisine: {restaurant.cuisine_en.values[0]}")
@@ -83,30 +83,46 @@ st.write(f"District: {restaurant.district_en.values[0]}")
 st.write(f"Address: {restaurant.add_en.values[0]}")
 st.write(f"Price: {price_d[restaurant.price.values[0]]}")
 
-st.map(geo_address,zoom=16)
+# st.map(geo_address,zoom=16)
 
-# st.pydeck_chart(pdk.Deck(
-#     map_style='mapbox://styles/mapbox/light-v9',
-#     initial_view_state=pdk.ViewState(
-#         latitude=lat,
-#         longitude=lon,
-#         zoom=16,
-#         pitch=50,
-#     ),
-#     layers=[
-#         pdk.Layer(
-#             'HexagonLayer',
-#             data=geo_address,
-#             elevation_scale=4,
-#             get_position="[lon,lat]",
-#             radius=10,
-#         ),
-#         pdk.Layer(
-#             "ScatterplotLayer",
-#             data=geo_address,
-#             get_position='[lon,lat]',
-#             get_color='[200,30,0,160]',
-#             get_radius=200
-#         ),
-#     ],
-# ))
+test = df_temp[['name','add_en','lat','lon']].dropna()
+
+layer =[ pdk.Layer(
+    "ScatterplotLayer",
+    test,
+    pickable=True,
+    opacity=0.8,
+    stroked=True,
+    filled=True,
+    radius_scale=6,
+    radius_min_pixels=1,
+    radius_max_pixels=100,
+    line_width_min_pixels=1,
+    get_position=['lon','lat'],
+    get_fill_color=[0, 0, 0],
+    get_line_color=[0, 255, 0],
+    ),
+    pdk.Layer(
+        "ScatterplotLayer",
+        geo_address,
+        pickable=True,
+        opacity=0.8,
+        stroked=True,
+        filled=True,
+        radius_scale=6,
+        radius = 200,
+        radius_min_pixels=1,
+        radius_max_pixels=100,
+        line_width_min_pixels=1,
+        get_position=['lon','lat'],
+        get_fill_color=[255, 0, 0],
+        get_line_color=[255, 0, 0],
+    )]
+view_state = pdk.ViewState(latitude=restaurant.lat.values[0], longitude=restaurant.lon.values[0], zoom=17, bearing=0, pitch=0)
+
+st.pydeck_chart(pdk.Deck(
+    layers=[layer], 
+    initial_view_state=view_state,
+    map_style='mapbox://styles/mapbox/light-v9',
+    tooltip={"text": "{name}\n{add_en}"},
+    ))
