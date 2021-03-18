@@ -12,7 +12,7 @@ st.set_page_config(
 def default_csv():
     return pd.read_csv("temp_df2.csv", index_col=0, header=0)
 
-st.title('Welcome to One Place Foodie')
+st.title('Welcome to One Place Foodie!')
 st.header("By Trio")
 st.header("")
 
@@ -24,7 +24,7 @@ pick_district = st.sidebar.selectbox(
 
 pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:',
-        df['cuisine'].unique().sort())
+        df['cuisine'].unique())
 
 df = df.loc[(df['district_en'] == pick_district) & (df['cuisine'] == pick_cuisine)]
 
