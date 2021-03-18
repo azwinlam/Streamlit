@@ -10,7 +10,7 @@ st.set_page_config(
 
 @st.cache
 def default_csv():
-    return pd.read_csv("temp_df.csv", index_col=0, header=0)
+    return pd.read_csv("temp_df2.csv", index_col=0, header=0)
 
 st.title('Welcome to One Place Foodie')
 st.header("By Trio")
