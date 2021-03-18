@@ -15,7 +15,7 @@ st.set_page_config(
 
 @st.cache
 def default_csv():
-    return pd.read_csv("temp_df4.csv", index_col=0, header=0)
+    return pd.read_csv("temp_df5.csv", index_col=0, header=0)
 
 st.title('Welcome to One Place Foodie!v3')
 st.header("By Trio")
@@ -47,9 +47,14 @@ if pick_district != "All District" and pick_cuisine == "All Cuisine":
 if pick_district != "All District" and pick_cuisine != "All Cuisine":
     df_temp = df.loc[(df.district_en.str.contains(pick_district)) & (df.cuisine_en.str.contains(pick_cuisine))]
 
-st.header(f"There are {df.shape[0]} restaurants in {pick_district} for {pick_cuisine}")
-st.write(df_temp)
 
+st.header(f"There are {df.shape[0]} restaurants in {pick_district} for {pick_cuisine}")
+
+try:
+    st.write(df_temp)
+except:
+    st.write("No restaurants from selection")
+    
 rest_num = st.number_input(label="Input Restaurant Number",value=int(df_temp.index[0][4:]),step = 1)
 
 restaurant = df[df.index==f"rest{rest_num}"]
@@ -79,7 +84,6 @@ st.write(f"Address: {restaurant.add_en.values[0]}")
 st.write(f"Price: {price_d[restaurant.price.values[0]]}")
 
 st.map(geo_address,zoom=16)
-st.write(lat,lon)
 
 # st.pydeck_chart(pdk.Deck(
 #     map_style='mapbox://styles/mapbox/light-v9',
