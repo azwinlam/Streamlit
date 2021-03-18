@@ -69,9 +69,9 @@ address = temp.add_en.values[0]
 res = requests.get(url+address, headers=headers)
 
 geo = json.loads(res.text)
-lat = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Latitude"])
-lon = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Longitude"])
-geo_address = pd.DataFrame({"lat":lat, "lon":lon}, index=None)
+lat = geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Latitude"]
+lon = geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Longitude"]
+geo_address = pd.DataFrame({"lat":float(lat), "lon":float(lon)}, index=None)
 
 st.write(f"Restraunt Name: {temp.name.values[0]}, {temp.name2.values[0]} ")
 st.write(f"Cuisine: {temp.cuisine_en.values[0]}")
