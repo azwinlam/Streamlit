@@ -34,7 +34,7 @@ pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:',
         df['cuisine'].unique())
 
-if pick_district == "All Cuisine" & pick_cuisine == "All Cuisine":
+if pick_district == "All Cuisine" and pick_cuisine == "All Cuisine":
     df = df
 if pick_district == "All District":
     df = df.loc[df['cuisine'] == pick_cuisine]
