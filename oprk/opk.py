@@ -13,7 +13,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
     )
 
-@st.cache
+@st.cache()
 def default_csv():
     return pd.read_csv("temp_df5.csv", index_col=0, header=0)
 
@@ -30,10 +30,8 @@ district_array = np.insert(district_array, 0, values="All District")
 pick_district = st.sidebar.selectbox(
         'Pick Location:', district_array, index=4)
 
+cuisine_temp = df['cuisine_en'].value_counts().index.unique()
 
-#Cuisine Side Bar
-cuisine_array = df['cuisine_en'].unique()
-cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
 
 pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:', cuisine_array)
@@ -47,6 +45,14 @@ if pick_district != "All District" and pick_cuisine == "All Cuisine":
 if pick_district != "All District" and pick_cuisine != "All Cuisine":
     df_temp = df.loc[(df.district_en.str.contains(pick_district)) & (df.cuisine_en.str.contains(pick_cuisine))]
 
+#Cuisine Side Bar
+
+if pick_district == "All District":
+    cuisine_array = df['cuisine_en'].value_counts().index.unique()
+    cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
+else:
+    cuisine_array = df_temp['cuisine_en'].value_counts().index.unique()
+    cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
 
 st.header(f"There are {df_temp.shape[0]} restaurants in {pick_district} for {pick_cuisine}")
 
