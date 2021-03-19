@@ -15,7 +15,7 @@ st.set_page_config(
 
 @st.cache()
 def default_csv():
-    return pd.read_csv("temp_df6.csv", index_col=0, header=0)
+    return pd.read_csv("temp_df7.csv", index_col=0, header=0)
 
 st.title('Welcome to One Place Foodie! v6')
 st.header("By Trio")
@@ -58,19 +58,6 @@ rest_num = st.number_input(label="Input Restaurant Number",value=int(df_temp.ind
 
 restaurant = df[df.index==f"rest{rest_num}"]
 
-price_d = {50: "Less than 50 HKD",
-            51: "51-100 HKD", 
-            101: "101-200 HKD", 
-            201: "201-400 HKD", 
-            401: "401-800 HKD", 
-            801: "More than 801 HKD"}
-
-dollar_d = {50: "$",
-            51: "$$", 
-            101: "$$$", 
-            201: "$$$$", 
-            401: "$$$$$", 
-            801: "$$$$$$"}
 
 #Address Lat Lon lookup
 # url = "https://www.als.ogcio.gov.hk/lookup?q="
@@ -85,7 +72,7 @@ geo_address = pd.DataFrame({"lat":[restaurant.lat.values[0]],
                             "lon":[restaurant.lon.values[0]],
                             "name" : [restaurant.name.values[0]],
                             "add_en" : [restaurant.add_en.values[0]],
-                           "price" : [dollar_d[restaurant.price.values[0]]],
+                           "price" : [restaurant.dollarsign.values[0]]],
                            }, index=None)
 
 st.write(f"Restaurant Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
@@ -96,7 +83,7 @@ st.write(f"Price: {dollar_d[restaurant.price.values[0]]}")
 
 # st.map(geo_address,zoom=16)
 
-test = df_temp[['name','add_en','lat','lon','price']].dropna()
+test = df_temp[['name','add_en','lat','lon','dollarsign']].dropna()
 
 layer =[ pdk.Layer(
     "ScatterplotLayer",
@@ -136,7 +123,7 @@ try:
         layers=[layer], 
         initial_view_state=view_state,
         map_style='mapbox://styles/mapbox/light-v9',
-        tooltip={"text": "{name}\n{add_en}\n {d_dollar[price]}"},
+        tooltip={"text": "{name}\n{add_en}\n {dollarsign}"},
         ))
 except:
     st.write("No address for this restaurant listing")
