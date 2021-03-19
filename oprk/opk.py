@@ -81,13 +81,17 @@ dollar_d = {50: "$",
 # geo = json.loads(res.text)
 # lat = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Latitude"])
 # lon = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Longitude"])
-geo_address = pd.DataFrame({"lat":[restaurant.lat.values[0]], "lon":[restaurant.lon.values[0]], "name" : [restaurant.name.values[0]], "add_en" : [restaurant.add_en.values[0]]}, index=None)
+geo_address = pd.DataFrame({"lat":[restaurant.lat.values[0]],
+                            "lon":[restaurant.lon.values[0]],
+                            "name" : [restaurant.name.values[0]],
+                            "add_en" : [restaurant.add_en.values[0]]},
+                           "price" : [dollar_d[restaurant.price.values[0]]]}, index=None)
 
 st.write(f"Restaurant Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
 st.write(f"Cuisine: {restaurant.cuisine_en.values[0]}")
 st.write(f"District: {restaurant.district_en.values[0]}")
 st.write(f"Address: {restaurant.add_en.values[0]}")
-st.write(f"Price: {price_d[restaurant.price.values[0]]}")
+st.write(f"Price: {dollar_d[restaurant.price.values[0]]}")
 
 # st.map(geo_address,zoom=16)
 
@@ -131,7 +135,7 @@ try:
         layers=[layer], 
         initial_view_state=view_state,
         map_style='mapbox://styles/mapbox/light-v9',
-        tooltip={"text": "{name}\n{add_en}\n dollar_d[{price}]"},
+        tooltip={"text": "{name}\n{add_en}\n {price}]"},
         ))
 except:
     st.write("No address for this restaurant listing")
