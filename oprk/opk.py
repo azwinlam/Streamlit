@@ -66,6 +66,13 @@ price_d = {50: "Less than 50 HKD",
             401: "401-800 HKD", 
             801: "More than 801 HKD"}
 
+dollar_d = {50: "$",
+            51: "$$", 
+            101: "$$$", 
+            201: "$$$$", 
+            401: "$$$$$", 
+            801: "$$$$$$"}
+
 #Address Lat Lon lookup
 # url = "https://www.als.ogcio.gov.hk/lookup?q="
 # headers = {"Accept": 'application/json', "Accept-Language": 'en'}
@@ -85,7 +92,7 @@ st.write(f"Price: {price_d[restaurant.price.values[0]]}")
 
 # st.map(geo_address,zoom=16)
 
-test = df_temp[['name','add_en','lat','lon']].dropna()
+test = df_temp[['name','add_en','lat','lon','price']].dropna()
 
 layer =[ pdk.Layer(
     "ScatterplotLayer",
@@ -125,7 +132,7 @@ try:
         layers=[layer], 
         initial_view_state=view_state,
         map_style='mapbox://styles/mapbox/light-v9',
-        tooltip={"text": "{name}\n{add_en}"},
+        tooltip={"text": "{name}\n{add_en}\n{dollar_d[price]}"},
         ))
 except:
     st.write("No address for this restaurant listing")
