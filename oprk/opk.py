@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import requests
-import json
+# import requests
+# import json
 import pydeck as pdk
+import webbrowser
 
 token = "pk.eyJ1IjoiYXp3aW5sYW0iLCJhIjoiY2ttZWZ1OXlmMGhneTJvbnpmbjN0cGlncCJ9.F9dG4cOF6weMIwUx1ajL6A"
 
@@ -15,10 +16,9 @@ st.set_page_config(
 
 @st.cache()
 def default_csv():
-    return pd.read_csv("temp_df7.csv", index_col=0, header=0)
+    return pd.read_csv("temp_df8.csv", index_col=0, header=0)
 
 st.title('Welcome to One Place Foodie! v6')
-st.header("By Trio")
 st.header("")
 
 df = default_csv()
@@ -40,6 +40,10 @@ else:
 pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:', cuisine_array)
 
+#Recommendation Side Bar
+if st.sidebar.button('Recommend Me'):
+    st.sidebar.write("Coming Soon!!!")
+
 if pick_district == "All District" and pick_cuisine == "All Cuisine":
     df_temp = df.iloc[:,:]
 if pick_district == "All District" and pick_cuisine != "All Cuisine":
@@ -52,8 +56,10 @@ if pick_district != "All District" and pick_cuisine != "All Cuisine":
 
 st.header(f"There are {df_temp.shape[0]} restaurants in {pick_district} for {pick_cuisine}")
 
+df_show = df_temp[["name",'name2','dollarsign','cuisine_en','stars','emoji_positive','emoji_neutral','emoji_negative','review_count','bookmarks']]
+
 try:
-    st.write(df_temp)
+    st.write(df_show)
 except:
     st.write("No restaurants from selection")
     
@@ -77,14 +83,24 @@ geo_address = pd.DataFrame({"lat":[restaurant.lat.values[0]],
                             "add_en" : [restaurant.add_en.values[0]],
                            "price" : [restaurant.dollarsign.values[0]],
                            }, index=None)
-
-st.write(f"Restaurant Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
+if {restaurant.name.values[0]} == {restaurant.name2.values[0]}:
+    st.write(f"Restaurant Name: {restaurant.name.values[0]}")
+else:
+    st.write(f"Restaurant Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
 st.write(f"Cuisine: {restaurant.cuisine_en.values[0]}")
 st.write(f"District: {restaurant.district_en.values[0]}")
 st.write(f"Address: {restaurant.add_en.values[0]}")
+if restaurant.telephone.values[0] is not np.nan:
+    phone_number = f'<a href="tel:+852{restaurant.telephone.values[0]}"> {restaurant.telephone.values[0]} </a> '
+    st.markdown(f"Phone Number: {phone_number}", unsafe_allow_html=True)
+else:
+    st.markdown("Phone Number: None", unsafe_allow_html=True)
 st.write(f"Price: {restaurant.dollarsign.values[0]}")
 
-# st.map(geo_address,zoom=16)
+url = 'https://www.google.com/maps/search/?api=1&query=' + restaurant.name2.values[0] + " " + restaurant.add_en.values[0]
+if st.button('Google Maps'):
+    webbrowser.open_new_tab(url)
+
 
 test = df_temp[['name','add_en','lat','lon','dollarsign']].dropna()
 
