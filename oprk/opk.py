@@ -72,7 +72,7 @@ geo_address = pd.DataFrame({"lat":[restaurant.lat.values[0]],
                             "lon":[restaurant.lon.values[0]],
                             "name" : [restaurant.name.values[0]],
                             "add_en" : [restaurant.add_en.values[0]],
-                           "price" : [restaurant.dollarsign.values[0]]],
+                           "price" : [restaurant.dollarsign.values[0]],
                            }, index=None)
 
 st.write(f"Restaurant Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
