@@ -79,7 +79,7 @@ st.write(f"Restaurant Name: {restaurant.name.values[0]}, {restaurant.name2.value
 st.write(f"Cuisine: {restaurant.cuisine_en.values[0]}")
 st.write(f"District: {restaurant.district_en.values[0]}")
 st.write(f"Address: {restaurant.add_en.values[0]}")
-st.write(f"Price: {dollar_d[restaurant.price.values[0]]}")
+st.write(f"Price: {restaurant.dollarsign.values[0]}")
 
 # st.map(geo_address,zoom=16)
 
