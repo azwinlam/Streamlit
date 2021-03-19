@@ -33,13 +33,8 @@ pick_district = st.sidebar.selectbox(
 cuisine_temp = df['cuisine_en'].value_counts().index.unique()
 
 #Cuisine Side Bar
-
-if pick_district == "All District":
-    cuisine_array = df['cuisine_en'].value_counts().index.unique()
-    cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
-else:
-    cuisine_array = df_temp['cuisine_en'].value_counts().index.unique()
-    cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
+cuisine_array = df['cuisine_en'].value_counts().index.unique()
+cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
 
 pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:', cuisine_array)
