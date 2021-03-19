@@ -131,7 +131,7 @@ try:
         layers=[layer], 
         initial_view_state=view_state,
         map_style='mapbox://styles/mapbox/light-v9',
-        tooltip={"text": "{name}\n{add_en}\n{dollar_d[price]}"},
+        tooltip={"text": "{name}\n{add_en}\n dollar_d[{price}]"},
         ))
 except:
     st.write("No address for this restaurant listing")
