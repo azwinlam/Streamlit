@@ -75,9 +75,9 @@ price_d = {50: "Less than 50 HKD",
 # geo = json.loads(res.text)
 # lat = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Latitude"])
 # lon = float(geo["SuggestedAddress"][0]["Address"]["PremisesAddress"]["GeospatialInformation"]["Longitude"])
-geo_address = pd.DataFrame({"lat":[restaurant.lat.values[0]], "lon":[restaurant.lon.values[0]]}, index=None)
+geo_address = pd.DataFrame({"lat":[restaurant.lat.values[0]], "lon":[restaurant.lon.values[0]], "name" : [restaurant.name.values[0]], "add_en" : [restaurant.add_en.values[0]]}, index=None)
 
-st.write(f"Restraunt Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
+st.write(f"Restaurant Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
 st.write(f"Cuisine: {restaurant.cuisine_en.values[0]}")
 st.write(f"District: {restaurant.district_en.values[0]}")
 st.write(f"Address: {restaurant.add_en.values[0]}")
