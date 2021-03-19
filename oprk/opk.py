@@ -30,8 +30,9 @@ district_array = np.insert(district_array, 0, values="All District")
 pick_district = st.sidebar.selectbox(
         'Pick Location:', district_array, index=4)
 
-cuisine_temp = df['cuisine_en'].value_counts().index.unique()
-
+#Cuisine Side Bar
+cuisine_array = df['cuisine_en'].value_counts().index.unique()
+cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
 
 pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:', cuisine_array)
@@ -40,14 +41,18 @@ if pick_district == "All District" and pick_cuisine == "All Cuisine":
     df_temp = df.iloc[:,:]
 if pick_district == "All District" and pick_cuisine != "All Cuisine":
     df_temp = df.loc[df.cuisine_en.str.contains(pick_cuisine)]
+
 if pick_district != "All District" and pick_cuisine == "All Cuisine":
     df_temp = df.loc[(df.district_en.str.contains(pick_district))]
+    #Cuisine Side Bar
+    cuisine_array = df_temp['cuisine_en'].value_counts().index.unique()
+    cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
+    
+    pick_cuisine = st.sidebar.selectbox(
+            'Pick Cuisine:', cuisine_array)
 if pick_district != "All District" and pick_cuisine != "All Cuisine":
     df_temp = df.loc[(df.district_en.str.contains(pick_district)) & (df.cuisine_en.str.contains(pick_cuisine))]
 
-#Cuisine Side Bar
-cuisine_array = temp_df['cuisine_en'].value_counts().index.unique()
-cuisine_array = np.insert(cuisine_array, 0, values="All Cuisine")
 
 st.header(f"There are {df_temp.shape[0]} restaurants in {pick_district} for {pick_cuisine}")
 
