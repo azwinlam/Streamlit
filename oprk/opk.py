@@ -99,7 +99,7 @@ st.write(f"Price: {restaurant.dollarsign.values[0]}")
 
 url = 'https://www.google.com/maps/search/?api=1&query=' + restaurant.name2.values[0] + " " + restaurant.add_en.values[0]
 if st.button('Google Maps'):
-    webbrowser.open_new_tab(url)
+    webbrowser.open_new_tab(url,new=1)
 
 
 test = df_temp[['name','add_en','lat','lon','dollarsign']].dropna()
