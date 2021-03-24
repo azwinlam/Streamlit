@@ -81,7 +81,8 @@ if uploaded_file is not None:
           pass
     else:
         try:
-          original_image = Image.open(image_path)
+          original_image = Image.open(uploaded_file)
+          st.image(original_image)
           fixed_image = ImageOps.exif_transpose(original_image)
           image_to_resize = img_to_array(fixed_image)
         
