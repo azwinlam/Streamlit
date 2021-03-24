@@ -36,9 +36,6 @@ st.header("")
 def sample_csv():
     return pd.read_csv("mylogbook.csv",header=None, keep_default_na=False, nrows=8)
 
-@st.cache
-def sample_csv():
-    return pd.read_csv("mylogbook.csv",header=None, keep_default_na=False, nrows=8)
 
 @st.cache
 def default_csv(allow_output_mutation=True):
