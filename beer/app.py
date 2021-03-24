@@ -31,6 +31,7 @@ st.subheader("By Alex, Azwin, Jason")
 
 uploaded_file = st.file_uploader("Upload Image of Beer Logo")
 
+sample = False
 if uploaded_file is None:
     if st.button('Load Demo'):
         image_path = "./pictures/blueicetest1.jpg"
@@ -38,6 +39,7 @@ if uploaded_file is None:
         sample = Image.open(image_path)
         st.image(sample)
         uploaded_file = True
+        sample = True
 
 ## Model Loading
 model = tf.keras.models.load_model('test.h5')
@@ -45,38 +47,69 @@ class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Coro
 model.summary()
 
 if uploaded_file is not None:
-    try:
-      original_image = Image.open(image_path)
-      fixed_image = ImageOps.exif_transpose(original_image)
-      image_to_resize = img_to_array(fixed_image)
-    
-      resized = tf.image.resize(image_to_resize, [224, 224], method="bilinear",antialias=False)
-      img_array = tf.keras.preprocessing.image.img_to_array(resized)
-    
-      img_array = tf.expand_dims(img_array, 0) # Create a batch
-    
-      predictions = model.predict(img_array)
-      score = tf.nn.softmax(predictions[0])
-    
-      img_show = tf.squeeze(
-          img_array , axis=None, name=None)
-      
-      predicted_class = class_names[np.argmax(score)]
-    
-      st.write(f"This image most likely belongs to {predicted_class}")
-    
-      percentages = [i * 100 for i in predictions.tolist()[0]]
-    
-      results = zip(class_names, percentages)
-      sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
-    
-    
-      for i in sorted_by_second[:2]:
-        st.write(i)
-    
-    except:
-      pass
-    
+    if sample == True:
+        try:
+          original_image = Image.open(image_path)
+          fixed_image = ImageOps.exif_transpose(original_image)
+          image_to_resize = img_to_array(fixed_image)
+        
+          resized = tf.image.resize(image_to_resize, [224, 224], method="bilinear",antialias=False)
+          img_array = tf.keras.preprocessing.image.img_to_array(resized)
+        
+          img_array = tf.expand_dims(img_array, 0) # Create a batch
+        
+          predictions = model.predict(img_array)
+          score = tf.nn.softmax(predictions[0])
+        
+          img_show = tf.squeeze(
+              img_array , axis=None, name=None)
+          
+          predicted_class = class_names[np.argmax(score)]
+        
+          st.write(f"This image most likely belongs to {predicted_class}")
+        
+          percentages = [i * 100 for i in predictions.tolist()[0]]
+        
+          results = zip(class_names, percentages)
+          sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
+        
+        
+          for i in sorted_by_second[:2]:
+            st.write(i)
+        
+        except:
+          pass
+    else:
+        try:
+          original_image = Image.open(image_path)
+          fixed_image = ImageOps.exif_transpose(original_image)
+          image_to_resize = img_to_array(fixed_image)
+        
+          resized = tf.image.resize(image_to_resize, [224, 224], method="bilinear",antialias=False)
+          img_array = tf.keras.preprocessing.image.img_to_array(resized)
+        
+          img_array = tf.expand_dims(img_array, 0) # Create a batch
+        
+          predictions = model.predict(img_array)
+          score = tf.nn.softmax(predictions[0])
+        
+          img_show = tf.squeeze(
+              img_array , axis=None, name=None)
+          
+          predicted_class = class_names[np.argmax(score)]
+        
+          st.write(f"This image most likely belongs to {predicted_class}")
+        
+          percentages = [i * 100 for i in predictions.tolist()[0]]
+        
+          results = zip(class_names, percentages)
+          sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
+        
+        
+          for i in sorted_by_second[:2]:
+            st.write(i)
+        except:
+          pass
     
     # #Grab Test Pictures
     # test_dir = pathlib.Path("./pictures/")
