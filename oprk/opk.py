@@ -4,7 +4,7 @@ import numpy as np
 # import requests
 # import json
 import pydeck as pdk
-import webbrowser
+# import webbrowser
 
 token = "pk.eyJ1IjoiYXp3aW5sYW0iLCJhIjoiY2ttZWZ1OXlmMGhneTJvbnpmbjN0cGlncCJ9.F9dG4cOF6weMIwUx1ajL6A"
 
@@ -89,17 +89,19 @@ else:
     st.write(f"Restaurant Name: {restaurant.name.values[0]}, {restaurant.name2.values[0]} ")
 st.write(f"Cuisine: {restaurant.cuisine_en.values[0]}")
 st.write(f"District: {restaurant.district_en.values[0]}")
-st.write(f"Address: {restaurant.add_en.values[0]}")
+
+url = 'https://www.google.com/maps/search/?api=1&query=' + restaurant.name2.values[0] + ' ' + restaurant.add_en.values[0]
+address_url = f'<a href="{url}" target="_blank"> {restaurant.add_en.values[0]}</a>'
+st.markdown(f"Address: {address_url}", unsafe_allow_html=True)
+
 if restaurant.telephone.values[0] is not np.nan:
-    phone_number = f'<a href="tel:+852{restaurant.telephone.values[0]}"> {restaurant.telephone.values[0]} </a> '
+    phone_number = f'<a href="tel:{restaurant.telephone.values[0]}"> {restaurant.telephone.values[0]} </a> '
     st.markdown(f"Phone Number: {phone_number}", unsafe_allow_html=True)
 else:
     st.markdown("Phone Number: None", unsafe_allow_html=True)
 st.write(f"Price: {restaurant.dollarsign.values[0]}")
 
-url = 'https://www.google.com/maps/search/?api=1&query=' + restaurant.name2.values[0] + " " + restaurant.add_en.values[0]
-if st.button('Google Maps'):
-    webbrowser.open_new_tab(url)
+
 
 
 test = df_temp[['name','add_en','lat','lon','dollarsign']].dropna()
