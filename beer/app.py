@@ -27,7 +27,7 @@ def load_csv():
 
 @st.cache(suppress_st_warning=True)
 def load_model():
-    original_image = Image.open(uploaded_file)
+    original_image = Image.open(uploaded_file).convert("RGB")
     
     fixed_image = ImageOps.exif_transpose(original_image)
     image_to_resize = img_to_array(fixed_image)
