@@ -88,7 +88,7 @@ if uploaded_file is not None:
           fixed_image = ImageOps.exif_transpose(original_image)
           image_to_resize = img_to_array(fixed_image)
         
-          resized = tf.image.resize(image_to_resize, [224, 224], method="bilinear",antialias=False)
+          resized = tf.image.resize(image_to_resize, [224, 168], method="bilinear",antialias=False)
           img_array = tf.keras.preprocessing.image.img_to_array(resized)
         
           img_array = tf.expand_dims(img_array, 0) # Create a batch
