@@ -108,7 +108,7 @@ if uploaded_file is not None:
           sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
           for i in sorted_by_second[:2]:
             st.write(i)
-          original_image.save("FirstImageSaved.jpg")
+          original_image = original_image.save("FirstImageSaved.jpg")
         except:
           pass
     
