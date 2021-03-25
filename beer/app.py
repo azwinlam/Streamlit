@@ -47,7 +47,6 @@ if uploaded_file is None:
 ## Model Loading
 model = tf.keras.models.load_model('test.h5')
 class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'SOL', 'San Miguel', 'San Miguel Light', 'Stella', 'Tiger', 'Tsingtao']
-model.summary()
 
 if uploaded_file is not None:
     if sample == True:
