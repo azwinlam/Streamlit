@@ -13,6 +13,9 @@ from PIL import Image, ImageOps
 import pathlib
 import matplotlib.pyplot as plt
 
+import time
+
+
 
 st.set_page_config(
     page_title="Beer Price Checker!",
@@ -108,7 +111,8 @@ if uploaded_file is not None:
           sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
           for i in sorted_by_second[:2]:
             st.write(i)
-          original_image = original_image.save("FirstImageSaved.jpg")
+          timestr = time.strftime("%Y%m%d-%H%M%S")
+          original_image = original_image.save(f"/pictures/{predicted_class}{timestr}.jpg")
         except:
           pass
     
@@ -166,6 +170,6 @@ if uploaded_file is not None:
     df = load_csv()
     df = df.fillna("--")
     st.header("Best Prices Found")
-    temp_df = df[df.Brand==predicted_class]
+    temp_df = df[df.Brand==predicted_class.capitalize()]
     
     st.write(temp_df)
