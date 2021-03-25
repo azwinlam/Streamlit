@@ -96,7 +96,7 @@ if uploaded_file is not None:
         
           img_show = tf.squeeze(
               img_array , axis=None, name=None)
-          st.image(img_show)
+          
           
           predicted_class = class_names[np.argmax(score)]
         
