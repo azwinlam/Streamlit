@@ -185,9 +185,7 @@ if uploaded_file is not None:
     
     time.sleep(10)
     if correct != "True" and correct != "False":
-        st.write("penis")
-        st.write(correct)
-       # original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
+        original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
     
     
 
