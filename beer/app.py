@@ -10,8 +10,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image, ImageOps
-import pathlib
-import matplotlib.pyplot as plt
 
 import time
 
@@ -34,19 +32,21 @@ st.subheader("By Alex, Azwin, Jason")
 
 uploaded_file = st.file_uploader("Upload Image of Beer Logo")
 
+col1, col2 = st.beta_columns(2)
 sample = False
 if uploaded_file is None:
     if st.button('Load Demo'):
         image_path = "./pictures/blueicetest1.jpg"
         st.write('Sample Loaded')
         sample = Image.open(image_path)
-        st.image(sample)
+        col1.image(sample)
         uploaded_file = True
         sample = True
 
 ## Model Loading
 model = tf.keras.models.load_model('test.h5')
 class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'SOL', 'San Miguel', 'San Miguel Light', 'Stella', 'Tiger', 'Tsingtao']
+
 
 if uploaded_file is not None:
     if sample == True:
@@ -84,7 +84,7 @@ if uploaded_file is not None:
     else:
         try:
           original_image = Image.open(uploaded_file)
-          st.image(original_image)
+          col1.image(original_image)
           fixed_image = ImageOps.exif_transpose(original_image)
           image_to_resize = img_to_array(fixed_image)
         
@@ -110,8 +110,7 @@ if uploaded_file is not None:
           sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
           for i in sorted_by_second[:2]:
             st.write(i)
-          timestr = time.strftime("%Y%m%d-%H%M%S")
-          original_image = original_image.save(f"./pictures/{predicted_class}{timestr}.jpg")
+                   
         except:
           pass
     
@@ -163,12 +162,33 @@ if uploaded_file is not None:
     #         pass
         
     # ##------------------------------------------------------------------------    
-        
-    
-    
     df = load_csv()
     df = df.fillna("--")
     st.header("Best Prices Found")
-    temp_df = df[df.Brand==predicted_class.capitalize()]
+    temp_df = df[df.Brand==predicted_class.title()]
     
     st.write(temp_df)
+        
+    correct = "None"
+    timestr = time.strftime("%Y%m%d-%H%M%S")
+    col2.header("Was Your Beer Classified Correctly?")
+    if col2.button("Yes"):
+        col2.text("Thank you!")
+        correct = "True"
+        original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
+
+    if col2.button("No"):
+        col2.text("Please take another photo")
+        correct = "False"
+        original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
+
+    
+    time.sleep(10)
+    if correct != "True" and correct != "False":
+        st.write("penis")
+        st.write(correct)
+       # original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
+    
+    
+
+    
