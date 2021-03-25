@@ -117,7 +117,7 @@ if uploaded_file is not None:
         try:
           predicted_class = load_model()
           col1.image(Image.open(uploaded_file))
-          original_image = Image.open(uploaded_file)
+          original_image = Image.open(uploaded_file).convert("RGB")
                    
         except:
           pass
