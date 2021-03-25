@@ -163,12 +163,19 @@ if uploaded_file is not None:
         
     # ##------------------------------------------------------------------------    
     df = load_csv()
-    df = df.fillna("--")
+    # df = df.fillna("--")
     st.header("Best Prices Found")
     temp_df = df[df.Brand==predicted_class.title()]
     
-    st.write(temp_df)
-        
+    
+    def highlight_min(s):
+        '''
+        highlight the maximum in a Series yellow.
+        '''
+        is_min = s == s.min()
+        return ['background-color: yellow' if v else '' for v in is_min]
+    
+    st.table(temp_df.style.highlight_min(subset=['Wellcome','PARKnSHOP','Market_Place','Watsons','Aeon','DCH Food Mart'],color = 'yellow', axis = 1))
     correct = "None"
     timestr = time.strftime("%Y%m%d-%H%M%S")
     col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=predicted_class))
