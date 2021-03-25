@@ -171,7 +171,7 @@ if uploaded_file is not None:
         
     correct = "None"
     timestr = time.strftime("%Y%m%d-%H%M%S")
-    col2.header("Is this a {predicted_class?")
+    col2.header(f"Is this a {predicted_class?")
     if col2.button("Yes"):
         col2.text("Thank you!")
         correct = "True"
