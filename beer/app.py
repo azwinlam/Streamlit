@@ -45,7 +45,7 @@ if uploaded_file is None:
 
 ## Model Loading
 model = tf.keras.models.load_model('MAR25AFTERNOON.h5')
-class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'San Miguel', 'San Miguel Light', 'Skol', 'Sol', 'Stella Artois', 'Tiger', 'Tsingtao', 'Yanjing']
+class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona Extra', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'San Mig', 'San Miguel', 'Skol Beer', 'Sol', 'Stella Artois', 'Tiger', 'Tsingtao Beer', 'Yanjing Beer']
 
 
 if uploaded_file is not None:
