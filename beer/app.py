@@ -108,9 +108,7 @@ if uploaded_file is not None:
           sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
           for i in sorted_by_second[:2]:
             st.write(i)
-          
-          save_this_image = tf.keras.preprocessing.image.array_to_img(img_show)
-          save_this_image = save_this_image.save("thisisfirstsaved")
+          original_image.save("FirstImageSaved.jpg")
         except:
           pass
     
