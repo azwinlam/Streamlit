@@ -96,6 +96,7 @@ if uploaded_file is not None:
         
           img_show = tf.squeeze(
               img_array , axis=None, name=None)
+          st.image(img_show)
           
           predicted_class = class_names[np.argmax(score)]
         
@@ -105,8 +106,9 @@ if uploaded_file is not None:
         
           results = zip(class_names, percentages)
           sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
-        
-        
+          
+          save_this_image = tf.keras.preprocessing.image.array_to_img(img_show)
+          save_this_image = save_this_image.save("thisisfirstsaved")
           for i in sorted_by_second[:2]:
             st.write(i)
         except:
