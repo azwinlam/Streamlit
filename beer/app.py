@@ -26,7 +26,7 @@ def load_csv():
     return pd.read_csv("df_price.csv",header=0,index_col=0)
 
 
-st.title("Beer Price Check")
+st.title("Beer Price Check V3")
 st.subheader("By Alex, Azwin, Jason")
 
 
@@ -168,14 +168,8 @@ if uploaded_file is not None:
     temp_df = df[df.Brand==predicted_class.title()]
     
     
-    def highlight_min(s):
-        '''
-        highlight the maximum in a Series yellow.
-        '''
-        is_min = s == s.min()
-        return ['background-color: yellow' if v else '' for v in is_min]
-    
-    st.table(temp_df.style.highlight_min(subset=['Wellcome','PARKnSHOP','Market_Place','Watsons','Aeon','DCH Food Mart'],color = 'yellow', axis = 1))
+   
+    st.table(temp_df.style.highlight_min(subset=['Wellcome','PARKnSHOP','Market_Place','Watsons','Aeon','DCH Food Mart'],color = '#D3D3D3', axis = 1))
     correct = "None"
     timestr = time.strftime("%Y%m%d-%H%M%S")
     col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=predicted_class))
