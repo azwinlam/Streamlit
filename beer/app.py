@@ -111,8 +111,8 @@ if uploaded_file is not None:
           for i in sorted_by_second[:2]:
             st.write(i)
           timestr = time.strftime("%Y%m%d-%H%M%S")
-          original_image = original_image.save(f"/pictures/{predicted_class}{timestr}.jpg")
-          original_image = original_image.save("/pictures/Test.jpg")
+          original_image = original_image.save(f"./pictures/{predicted_class}{timestr}.jpg")
+          original_image = original_image.save("./pictures/Test.jpg")
         except:
           pass
     
