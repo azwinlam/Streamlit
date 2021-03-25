@@ -36,7 +36,7 @@ col1, col2 = st.beta_columns(2)
 sample = False
 if uploaded_file is None:
     if st.button('Load Demo'):
-        image_path = "./pictures/blueicetest1.jpg"
+        image_path = "./sample/blueicetest1.jpg"
         st.write('Sample Loaded')
         sample = Image.open(image_path)
         col1.image(sample)
