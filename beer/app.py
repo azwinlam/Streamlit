@@ -130,7 +130,7 @@ if uploaded_file is not None:
                 matches = bf.match(beer_list[base][2],beer_list[test][2])
                 matches = sorted(matches, key = lambda x:x.distance)
                 imgA = cv2.drawMatches(beer_list[base][0],beer_list[base][1], beer_list[test][0], beer_list[test][1], matches[:50], beer_list[test][0], flags=2)
-                st.image(imgA)
+                st.image(imgA, width = 300)
                 st.write(base)
                 st.write(f"Matches: {len(matches)} out of Total: {len(beer_list[base][1])}") 
                 st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
@@ -140,7 +140,8 @@ if uploaded_file is not None:
             answer = []
             for i in top3:
                 answer.append(check_image(i[0],"Test"))
-            final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0]          
+            final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0] 
+            st.write(final_answer)
             
                    
         except:
@@ -177,5 +178,3 @@ if uploaded_file is not None:
     if correct != "True" and correct != "False":
         original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
     
-for i in top3:
-    st.write(i)
