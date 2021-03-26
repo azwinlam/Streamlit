@@ -135,7 +135,8 @@ if uploaded_file is not None:
             for i in top3:
                 answer.append(check_image(i[0],"Test"))
             final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0] 
-            st.write(final_answer)
+        st.write(final_answer)
+        st.write(beer_list)
 
     df = load_csv()
     # df = df.fillna("--") 
