@@ -35,14 +35,6 @@ def load_logo():
 beer_list = load_logo()
 
 
-
-
-
-
-
-
-
-
 st.set_page_config(
     page_title="Beer Price Checker!",
     layout="wide",
@@ -185,4 +177,5 @@ if uploaded_file is not None:
     if correct != "True" and correct != "False":
         original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
     
-
+for i in top 3:
+    st.write(i)
