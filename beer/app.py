@@ -129,14 +129,14 @@ if uploaded_file is not None:
             st.write(i)
         
         st.write(top3[0][1])
-        if top3[0][1] < 0.90:
+        if top3[0][1] < 90:
             beer_list["Test"] = input_image()  
             answer = []
             for i in top3:
                 answer.append(check_image(i[0],"Test"))
             final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0] 
-        st.write(final_answer)
-        st.write(beer_list)
+            st.write(final_answer)
+            st.write(beer_list)
 
     df = load_csv()
     # df = df.fillna("--") 
