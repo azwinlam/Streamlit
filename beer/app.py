@@ -160,20 +160,21 @@ if uploaded_file is not None:
     st.table(temp_df.style.highlight_min(subset=['Wellcome','PARKnSHOP','Market_Place','Watsons','Aeon','DCH Food Mart'],color = '#D3D3D3', axis = 1))
     correct = "None"
     timestr = time.strftime("%Y%m%d-%H%M%S")
+    
     if sample != True:
         col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=final_answer))
-    if col2.button("Yes"):
-        col2.text("Thank you!")
-        correct = "True"
-        original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
-
-    if col2.button("No"):
-        col2.text("Please take a photo with focus on the logo")
-        correct = "False"
-        original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
+        if col2.button("Yes"):
+            col2.text("Thank you!")
+            correct = "True"
+            original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
+    
+        if col2.button("No"):
+            col2.text("Please take a photo with focus on the logo")
+            correct = "False"
+            original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
 
     
 
-    if correct != "True" and correct != "False":
-        original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
+        if correct != "True" and correct != "False":
+            original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
     
