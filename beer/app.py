@@ -22,9 +22,8 @@ def load_logo():
     for ext in ('*.gif', '*.png', '*.jpg'):
         files.extend(glob(join("./logo", ext)))
     beer_list = {}
-    st.write(files)
     for i in files:
-        key = "test"
+        key = re.findall(r"./logo\/(.+)\.",i)
         img1 = cv2.imread(str(i)) 
         img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
         sift = cv2.ORB_create()
