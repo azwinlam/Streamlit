@@ -10,8 +10,36 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image, ImageOps
-
+import cv2 
+import re
+from os.path import join
+from glob import glob
 import time
+
+
+def load_logo():
+    files = []
+    for ext in ('*.gif', '*.png', '*.jpg'):
+        files.extend(glob(join("./logo", ext)))
+    beer_list = {}
+    for i in files:
+        key = re.findall(r"./logo\\(.+)\.",i)
+        img1 = cv2.imread(str(i)) 
+        img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+        sift = cv2.ORB_create()
+        keypoints, descriptors = sift.detectAndCompute(img2,None)
+        img3 = cv2.drawKeypoints(img2,keypoints,img1)
+        beer_list[key[0]] = img2, keypoints, descriptors
+    return beer_list
+
+beer_list = load_logo()
+
+
+
+
+
+
+
 
 
 
@@ -54,7 +82,7 @@ def load_model():
     for i in sorted_by_second[:2]:
         st.write(i)
     
-    return predicted_class
+    return predicted_class, sorted_by_second[:2]
       
 
 
@@ -63,6 +91,7 @@ st.subheader("By Alex, Azwin, Jason")
 
 
 uploaded_file = st.file_uploader("Upload Image of Beer Logo")
+
 
 col1, col2 = st.beta_columns(2)
 sample = False
@@ -115,11 +144,33 @@ if uploaded_file is not None:
           pass
     else:
         try:
-          col1.image(Image.open(uploaded_file))
-          
-          col1.write("")
-          predicted_class = load_model()
-          original_image = Image.open(uploaded_file).convert("RGB")
+            col1.image(Image.open(uploaded_file))
+            
+            col1.write("")
+            predicted_class = load_model()
+            original_image = Image.open(uploaded_file).convert("RGB")
+            original_image.save("./sample/test.jpg")
+
+            def input_image():
+                img1 = cv2.imread("./sample/test.jpg") 
+                img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+                sift = cv2.ORB_create()
+                keypoints, descriptors = sift.detectAndCompute(img2,None)
+                img3 = cv2.drawKeypoints(img2,keypoints,img1)
+                return img2, keypoints, descriptors
+            
+            def check_image(base,test="Test"):
+                bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
+                matches = bf.match(beer_list[base][2],beer_list[test][2])
+                matches = sorted(matches, key = lambda x:x.distance)
+                return base, len(matches)/len(beer_list[base][1])   
+            
+            beer_list["Test"] = input_image()  
+            answer = []
+            for i in predicted_class[1]:
+                answer.append(check_image(i[0],"Test"))
+            final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0]          
+            
                    
         except:
           pass
@@ -130,7 +181,7 @@ if uploaded_file is not None:
     
     @st.cache
     def temp_df():
-        return df[df.Brand==predicted_class.title()]
+        return df[df.Brand==predicted_class[0].title()]
     
     temp_df = temp_df()
     
@@ -139,7 +190,7 @@ if uploaded_file is not None:
     st.table(temp_df.style.highlight_min(subset=['Wellcome','PARKnSHOP','Market_Place','Watsons','Aeon','DCH Food Mart'],color = '#D3D3D3', axis = 1))
     correct = "None"
     timestr = time.strftime("%Y%m%d-%H%M%S")
-    col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=predicted_class))
+    col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0][0].lower() not in ['a','e','i','o','u'] else "an", beer_class=final_answer))
     if col2.button("Yes"):
         col2.text("Thank you!")
         correct = "True"
@@ -155,6 +206,4 @@ if uploaded_file is not None:
     if correct != "True" and correct != "False":
         original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
     
-    
 
-    
