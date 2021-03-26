@@ -23,7 +23,7 @@ def load_logo():
         files.extend(glob(join("./logo", ext)))
     beer_list = {}
     for i in files:
-        key = re.findall(r"./logo\\(.+)\.",i)
+        key = re.findall(r".*/logo\\(.+)\.",i)
         img1 = cv2.imread(str(i)) 
         img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
         sift = cv2.ORB_create()
