@@ -162,7 +162,8 @@ if uploaded_file is not None:
     st.table(temp_df.style.highlight_min(subset=['Wellcome','PARKnSHOP','Market_Place','Watsons','Aeon','DCH Food Mart'],color = '#D3D3D3', axis = 1))
     correct = "None"
     timestr = time.strftime("%Y%m%d-%H%M%S")
-    col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=predicted_class))
+    if sample != True:
+        col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=final_answer))
     if col2.button("Yes"):
         col2.text("Thank you!")
         correct = "True"
