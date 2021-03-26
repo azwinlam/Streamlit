@@ -177,5 +177,5 @@ if uploaded_file is not None:
     if correct != "True" and correct != "False":
         original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
     
-for i in top 3:
+for i in top3:
     st.write(i)
