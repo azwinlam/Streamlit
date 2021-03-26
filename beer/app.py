@@ -163,6 +163,11 @@ if uploaded_file is not None:
                 bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
                 matches = bf.match(beer_list[base][2],beer_list[test][2])
                 matches = sorted(matches, key = lambda x:x.distance)
+                imgA = cv2.drawMatches(beer_list[base][0],beer_list[base][1], beer_list[test][0], beer_list[test][1], matches[:50], beer_list[test][0], flags=2)
+                st.image(imgA)
+                st.write(base)
+                st.write(f"Matches: {len(matches)} out of Total: {len(beer_list[base][1])}") 
+                st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
                 return base, len(matches)/len(beer_list[base][1])   
             
             beer_list["Test"] = input_image()  
