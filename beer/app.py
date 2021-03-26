@@ -22,6 +22,7 @@ def load_logo():
     for ext in ('*.gif', '*.png', '*.jpg'):
         files.extend(glob(join("./logo", ext)))
     beer_list = {}
+    st.write(files)
     for i in files:
         key = "test"
         img1 = cv2.imread(str(i)) 
