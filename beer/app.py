@@ -151,6 +151,7 @@ if uploaded_file is not None:
     
     if sample != True:
         col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=predicted_class))
+        col2.text(f"Confidence out of 100: {top3[0][1]}")
         if col2.button("Yes"):
             col2.text("Thank you!")
             correct = "True"
