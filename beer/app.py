@@ -45,6 +45,9 @@ st.set_page_config(
 def load_csv():
     return pd.read_csv("df_price.csv",header=0,index_col=0)
 
+def temp_df():
+    return df[df.Brand==predicted_class.title()]
+
 @st.cache(suppress_st_warning=True)
 def load_model(original_image):
        
@@ -70,12 +73,27 @@ def load_model(original_image):
       
     results = zip(class_names, percentages)
     sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
-    for i in sorted_by_second[:2]:
-        st.write(i)
-    
     return predicted_class, sorted_by_second[:3]
-      
+     
+def input_image():
+    img1 = cv2.imread("./sample/test.jpg") 
+    img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+    sift = cv2.ORB_create()
+    keypoints, descriptors = sift.detectAndCompute(img2,None)
+    img3 = cv2.drawKeypoints(img2,keypoints,img1)
+    return img2, keypoints, descriptors 
 
+def check_image(base,test="Test"):
+    bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
+    matches = bf.match(beer_list[base][2],beer_list[test][2])
+    matches = sorted(matches, key = lambda x:x.distance)
+    imgA = cv2.drawMatches(beer_list[base][0],beer_list[base][1], beer_list[test][0], beer_list[test][1], matches[:50], beer_list[test][0], flags=2)
+
+    st.image(imgA, width = 300)
+    st.write(base)
+    st.write(f"Matches: {len(matches)} out of Total: {len(beer_list[base][1])}") 
+    st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
+    return base, len(matches)/len(beer_list[base][1])  
 
 st.title("Beer Price Check V6 CNN + SIFT")
 st.subheader("By Alex, Azwin, Jason")
@@ -110,32 +128,14 @@ if uploaded_file is not None:
     else:
         try:
             col1.image(Image.open(uploaded_file))
-            
+            for i in sorted_by_second[:3]:
+                st.write(i)
             col1.write("")
             original_image = Image.open(uploaded_file).convert("RGB")
             predicted_class, top3 = load_model(original_image)
             original_image = Image.open(uploaded_file).convert("RGB")
             original_image.save("./sample/test.jpg")
-
-            def input_image():
-                img1 = cv2.imread("./sample/test.jpg") 
-                img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-                sift = cv2.ORB_create()
-                keypoints, descriptors = sift.detectAndCompute(img2,None)
-                img3 = cv2.drawKeypoints(img2,keypoints,img1)
-                return img2, keypoints, descriptors
-            
-            def check_image(base,test="Test"):
-                bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
-                matches = bf.match(beer_list[base][2],beer_list[test][2])
-                matches = sorted(matches, key = lambda x:x.distance)
-                imgA = cv2.drawMatches(beer_list[base][0],beer_list[base][1], beer_list[test][0], beer_list[test][1], matches[:50], beer_list[test][0], flags=2)
-                st.image(imgA, width = 300)
-                st.write(base)
-                st.write(f"Matches: {len(matches)} out of Total: {len(beer_list[base][1])}") 
-                st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
-                return base, len(matches)/len(beer_list[base][1])   
-            
+          
             beer_list["Test"] = input_image()  
             answer = []
             for i in top3:
@@ -151,9 +151,7 @@ if uploaded_file is not None:
     # df = df.fillna("--") 
     st.header("Best Prices Found")
     
-    @st.cache
-    def temp_df():
-        return df[df.Brand==predicted_class.title()]
+
     
     temp_df = temp_df()
     
