@@ -26,7 +26,7 @@ def load_logo():
         key = re.findall(r"./logo\/(.+)\.",i)
         img1 = cv2.imread(str(i)) 
         img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-        sift = cv2.SIFT_create()
+        sift = cv2.ORB_create()
         keypoints, descriptors = sift.detectAndCompute(img2,None)
         img3 = cv2.drawKeypoints(img2,keypoints,img1)
         beer_list[key[0]] = img2, keypoints, descriptors
@@ -73,7 +73,7 @@ def load_model(original_image):
 def input_image():
     img1 = cv2.imread("./sample/test.jpg") 
     img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-    sift = cv2.SIFT_create()
+    sift = cv2.ORB_create()
     keypoints, descriptors = sift.detectAndCompute(img2,None)
     img3 = cv2.drawKeypoints(img2,keypoints,img1)
     return img2, keypoints, descriptors 
