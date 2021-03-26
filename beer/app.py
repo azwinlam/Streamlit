@@ -17,22 +17,22 @@ from glob import glob
 import time
 
 
-def load_logo():
-    files = []
-    for ext in ('*.gif', '*.png', '*.jpg'):
-        files.extend(glob(join("./logo", ext)))
-    beer_list = {}
-    for i in files:
-        key = re.findall(r"./logo\/(.+)\.",i)
-        img1 = cv2.imread(str(i)) 
-        img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-        sift = cv2.ORB_create()
-        keypoints, descriptors = sift.detectAndCompute(img2,None)
-        img3 = cv2.drawKeypoints(img2,keypoints,img1)
-        beer_list[key[0]] = img2, keypoints, descriptors
-    return beer_list
+# def load_logo():
+#     files = []
+#     for ext in ('*.gif', '*.png', '*.jpg'):
+#         files.extend(glob(join("./logo", ext)))
+#     beer_list = {}
+#     for i in files:
+#         key = re.findall(r"./logo\/(.+)\.",i)
+#         img1 = cv2.imread(str(i)) 
+#         img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+#         sift = cv2.ORB_create()
+#         keypoints, descriptors = sift.detectAndCompute(img2,None)
+#         img3 = cv2.drawKeypoints(img2,keypoints,img1)
+#         beer_list[key[0]] = img2, keypoints, descriptors
+#     return beer_list
 
-beer_list = load_logo()
+# beer_list = load_logo()
 
 
 st.set_page_config(
@@ -70,25 +70,25 @@ def load_model(original_image):
     sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
     return predicted_class, sorted_by_second[:3]
      
-def input_image():
-    img1 = cv2.imread("./sample/test.jpg") 
-    img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-    sift = cv2.ORB_create()
-    keypoints, descriptors = sift.detectAndCompute(img2,None)
-    img3 = cv2.drawKeypoints(img2,keypoints,img1)
-    return img2, keypoints, descriptors 
+# def input_image():
+#     img1 = cv2.imread("./sample/test.jpg") 
+#     img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+#     sift = cv2.ORB_create()
+#     keypoints, descriptors = sift.detectAndCompute(img2,None)
+#     img3 = cv2.drawKeypoints(img2,keypoints,img1)
+#     return img2, keypoints, descriptors 
 
-def check_image(base,test="Test"):
-    bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
-    matches = bf.match(beer_list[base][2],beer_list[test][2])
-    matches = sorted(matches, key = lambda x:x.distance)
-    # imgA = cv2.drawMatches(beer_list[base][0],beer_list[base][1], beer_list[test][0], beer_list[test][1], matches[:50], beer_list[test][0], flags=2)
+# def check_image(base,test="Test"):
+#     bf = cv2.BFMatcher(cv2.NORM_L1, crossCheck=True)
+#     matches = bf.match(beer_list[base][2],beer_list[test][2])
+#     matches = sorted(matches, key = lambda x:x.distance)
+#     # imgA = cv2.drawMatches(beer_list[base][0],beer_list[base][1], beer_list[test][0], beer_list[test][1], matches[:50], beer_list[test][0], flags=2)
 
-    # st.image(imgA, width = 300)
-    # st.write(base)
-    # st.write(f"Matches: {len(matches)} out of Total: {len(beer_list[base][1])}") 
-    # st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
-    return base, len(matches)/len(beer_list[base][1])  
+#     # st.image(imgA, width = 300)
+#     # st.write(base)
+#     # st.write(f"Matches: {len(matches)} out of Total: {len(beer_list[base][1])}") 
+#     # st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
+#     return base, len(matches)/len(beer_list[base][1])  
 
 st.title("Beer Price Check V7 CNN")
 st.subheader("By Alex, Azwin, Jason")
@@ -128,14 +128,14 @@ if uploaded_file is not None:
         for i in top3:
             st.write(i)
         
-        st.write(top3[0][1])
-        if top3[0][1] < 90:
-            beer_list["Test"] = input_image()  
-            answer = []
-            for i in top3:
-                answer.append(check_image(i[0],"Test"))
-            final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0]
-            predicted_class = final_answer
+        # st.write(top3[0][1])
+        # if top3[0][1] < 90:
+        #     beer_list["Test"] = input_image()  
+        #     answer = []
+        #     for i in top3:
+        #         answer.append(check_image(i[0],"Test"))
+        #     final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0]
+        #     predicted_class = final_answer
 
 
     df = load_csv()
