@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Mar 24 18:56:09 2021
+
+@author: azwin
+"""
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -13,11 +19,11 @@ import time
 
 def load_logo():
     files = []
-    for ext in ('.gif', '.png', '*.jpg'):
+    for ext in ('*.gif', '*.png', '*.jpg'):
         files.extend(glob(join("./logo", ext)))
     beer_list = {}
     for i in files:
-        key = re.findall(r"./logo\/(.+)\.",i)
+        key = re.findall(r"./logo\\(.+)\.",i)
         img1 = cv2.imread(str(i)) 
         img2 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
         sift = cv2.ORB_create()
@@ -148,12 +154,13 @@ if uploaded_file is not None:
         if col2.button("Yes"):
             col2.text("Thank you!")
             correct = "True"
-            original_image = original_image.save(f"./pictures/{correct}{predicted_class}{timestr}.jpg")
+            original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
     
         if col2.button("No"):
             col2.text("Please take a photo with focus on the logo")
             correct = "False"
-            original_image = original_image.save(f"./pictures/{correct}{predicted_class}{timestr}.jpg")
+            original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
 
         if correct != "True" and correct != "False":
             original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
+    
