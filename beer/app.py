@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 24 18:56:09 2021
-
-@author: azwin
-"""
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -19,7 +13,7 @@ import time
 
 def load_logo():
     files = []
-    for ext in ('*.gif', '*.png', '*.jpg'):
+    for ext in ('.gif', '.png', '*.jpg'):
         files.extend(glob(join("./logo", ext)))
     beer_list = {}
     for i in files:
@@ -58,19 +52,14 @@ def load_model(original_image):
     img_array = tf.keras.preprocessing.image.img_to_array(resized)
       
     img_array = tf.expand_dims(img_array, 0) # Create a batch
-      
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
-      
     img_show = tf.squeeze(img_array , axis=None, name=None)
-    
-    
     predicted_class = class_names[np.argmax(score)]
-      
+
     st.write(f"This image most likely belongs to {predicted_class}")
       
     percentages = [i * 100 for i in predictions.tolist()[0]]
-      
     results = zip(class_names, percentages)
     sorted_by_second = sorted(results, key=lambda tup: tup[1],reverse=True)
     return predicted_class, sorted_by_second[:3]
@@ -98,9 +87,7 @@ def check_image(base,test="Test"):
 st.title("Beer Price Check V6 CNN + SIFT")
 st.subheader("By Alex, Azwin, Jason")
 
-
 uploaded_file = st.file_uploader("Upload Image of Beer Logo")
-
 
 col1, col2 = st.beta_columns(2)
 sample = False
@@ -117,7 +104,6 @@ if uploaded_file is None:
 model = tf.keras.models.load_model('MAR25AFTERNOON.h5')
 class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona Extra', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'San Mig', 'San Miguel', 'Skol Beer', 'Sol', 'Stella Artois', 'Tiger', 'Tsingtao Beer', 'Yanjing Beer']
 
-
 if uploaded_file is not None:
     if sample == True:
         try:
@@ -128,14 +114,15 @@ if uploaded_file is not None:
     else:
         try:
             col1.image(Image.open(uploaded_file))
-            for i in sorted_by_second[:3]:
-                st.write(i)
+            
             col1.write("")
             original_image = Image.open(uploaded_file).convert("RGB")
-            predicted_class, top3 = load_model(original_image)
-            original_image = Image.open(uploaded_file).convert("RGB")
             original_image.save("./sample/test.jpg")
-          
+            predicted_class, top3 = load_model(original_image)
+
+            for i in top3:
+                st.write(i)
+            
             beer_list["Test"] = input_image()  
             answer = []
             for i in top3:
@@ -143,7 +130,6 @@ if uploaded_file is not None:
             final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0] 
             st.write(final_answer)
             
-                   
         except:
           pass
     
@@ -151,11 +137,7 @@ if uploaded_file is not None:
     # df = df.fillna("--") 
     st.header("Best Prices Found")
     
-
-    
-    # temp_df = temp_df()
-    
-    
+    temp_df = temp_df()
    
     st.table(temp_df.style.highlight_min(subset=['Wellcome','PARKnSHOP','Market_Place','Watsons','Aeon','DCH Food Mart'],color = '#D3D3D3', axis = 1))
     correct = "None"
@@ -166,15 +148,12 @@ if uploaded_file is not None:
         if col2.button("Yes"):
             col2.text("Thank you!")
             correct = "True"
-            original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
+            original_image = original_image.save(f"./pictures/{correct}{predicted_class}{timestr}.jpg")
     
         if col2.button("No"):
             col2.text("Please take a photo with focus on the logo")
             correct = "False"
-            original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
-
-    
+            original_image = original_image.save(f"./pictures/{correct}{predicted_class}{timestr}.jpg")
 
         if correct != "True" and correct != "False":
             original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
-    
