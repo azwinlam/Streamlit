@@ -54,9 +54,8 @@ def load_csv():
     return pd.read_csv("df_price.csv",header=0,index_col=0)
 
 @st.cache(suppress_st_warning=True)
-def load_model():
-    original_image = Image.open(uploaded_file).convert("RGB")
-    
+def load_model(original_image):
+       
     fixed_image = ImageOps.exif_transpose(original_image)
     image_to_resize = img_to_array(fixed_image)
       
@@ -82,7 +81,7 @@ def load_model():
     for i in sorted_by_second[:2]:
         st.write(i)
     
-    return predicted_class, sorted_by_second[:2]
+    return predicted_class, sorted_by_second[:3]
       
 
 
@@ -112,7 +111,8 @@ class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Coro
 if uploaded_file is not None:
     if sample == True:
         try:
-          predicted_class = load_model()
+            original_image = Image.open(image_path)
+            predicted_class, top3 = load_model(original_image)
         except:
           pass
     else:
@@ -120,7 +120,8 @@ if uploaded_file is not None:
             col1.image(Image.open(uploaded_file))
             
             col1.write("")
-            predicted_class = load_model()
+            original_image = Image.open(uploaded_file).convert("RGB")
+            predicted_class, top3 = load_model(original_image)
             original_image = Image.open(uploaded_file).convert("RGB")
             original_image.save("./sample/test.jpg")
 
@@ -145,7 +146,7 @@ if uploaded_file is not None:
             
             beer_list["Test"] = input_image()  
             answer = []
-            for i in predicted_class[1]:
+            for i in top3:
                 answer.append(check_image(i[0],"Test"))
             final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0]          
             
@@ -159,7 +160,7 @@ if uploaded_file is not None:
     
     @st.cache
     def temp_df():
-        return df[df.Brand==predicted_class[0].title()]
+        return df[df.Brand==predicted_class.title()]
     
     temp_df = temp_df()
     
@@ -168,7 +169,7 @@ if uploaded_file is not None:
     st.table(temp_df.style.highlight_min(subset=['Wellcome','PARKnSHOP','Market_Place','Watsons','Aeon','DCH Food Mart'],color = '#D3D3D3', axis = 1))
     correct = "None"
     timestr = time.strftime("%Y%m%d-%H%M%S")
-    col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0][0].lower() not in ['a','e','i','o','u'] else "an", beer_class=final_answer))
+    col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=final_answer))
     if col2.button("Yes"):
         col2.text("Thank you!")
         correct = "True"
