@@ -118,28 +118,24 @@ if uploaded_file is not None:
         except:
           pass
     else:
-        try:
-            col1.image(Image.open(uploaded_file))
-            
-            col1.write("")
-            original_image = Image.open(uploaded_file).convert("RGB")
-            original_image.save("./sample/test.jpg")
-            predicted_class, top3 = load_model(original_image)
+        col1.image(Image.open(uploaded_file))
+        
+        col1.write("")
+        original_image = Image.open(uploaded_file).convert("RGB")
+        original_image.save("./sample/test.jpg")
+        predicted_class, top3 = load_model(original_image)
 
+        for i in top3:
+            st.write(i)
+        
+        if top3[0][1] < 0.90:
+            beer_list["Test"] = input_image()  
+            answer = []
             for i in top3:
-                st.write(i)
-            
-            if top3[0][1] < 0.90:
-                beer_list["Test"] = input_image()  
-                answer = []
-                for i in top3:
-                    answer.append(check_image(i[0],"Test"))
-                final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0] 
-                st.write(final_answer)
-            
-        except:
-          pass
-    
+                answer.append(check_image(i[0],"Test"))
+            final_answer = sorted(answer, key = lambda x: x[1],reverse=True)[0][0] 
+            st.write(final_answer)
+
     df = load_csv()
     # df = df.fillna("--") 
     st.header("Best Prices Found")
