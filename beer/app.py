@@ -153,7 +153,7 @@ if uploaded_file is not None:
     
 
     
-    temp_df = temp_df()
+    # temp_df = temp_df()
     
     
    
