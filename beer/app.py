@@ -58,7 +58,7 @@ def load_model():
       
 
 
-st.title("Beer Price Check V4")
+st.title("Beer Price Check V5")
 st.subheader("By Alex, Azwin, Jason")
 
 
