@@ -128,6 +128,7 @@ if uploaded_file is not None:
         for i in top3:
             st.write(i)
         
+        st.write(top3[0][1])
         if top3[0][1] < 0.90:
             beer_list["Test"] = input_image()  
             answer = []
