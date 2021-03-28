@@ -124,9 +124,23 @@ if uploaded_file is not None:
         col1.write("")
         original_image = Image.open(uploaded_file).convert("RGB")
         original_image.save("./sample/test.jpg")
+        
+        ## Test Cropping
+        width, height = original_image.size
+        cropped = ImageOps.crop(original_image, border=width*0.2)
+        col1.image(cropped)
+        cropped.save("./sample/test_cropped.jpg")
+        ## Test Cropping
+        
         predicted_class, top3 = load_model(original_image)
+        
+        predicted_class_cropped, top3_cropped = load_model(original_image)
 
         for i in top3:
+            st.write(i)
+        
+        st.write("Cropped")
+        for i in top3_cropped:
             st.write(i)
         
         # st.write(top3[0][1])
