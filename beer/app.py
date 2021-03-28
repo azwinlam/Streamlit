@@ -90,8 +90,9 @@ def load_model(original_image):
 #     # st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
 #     return base, len(matches)/len(beer_list[base][1])  
 
-st.title("Beer Price Check V7 CNN")
+st.title("Beer Price Check V8 Parallel CNN")
 st.subheader("By Alex, Azwin, Jason")
+st.text("PARALLEL_MAR27NIGHTv1_962")
 
 uploaded_file = st.file_uploader("Upload Image of Beer Logo")
 
@@ -107,7 +108,7 @@ if uploaded_file is None:
         sample = True
 
 ## Model Loading
-model = tf.keras.models.load_model('MAR25AFTERNOON.h5')
+model = tf.keras.models.load_model('PARALLEL_MAR27NIGHTv1_962.h5')
 class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona Extra', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'San Mig', 'San Miguel', 'Skol Beer', 'Sol', 'Stella Artois', 'Tiger', 'Tsingtao Beer', 'Yanjing Beer']
 
 if uploaded_file is not None:
