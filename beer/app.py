@@ -134,7 +134,7 @@ if uploaded_file is not None:
         
         predicted_class, top3 = load_model(original_image)
         
-        predicted_class_cropped, top3_cropped = load_model(original_image)
+        predicted_class_cropped, top3_cropped = load_model(cropped)
 
         for i in top3:
             st.write(i)
