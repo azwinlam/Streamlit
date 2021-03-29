@@ -57,7 +57,7 @@ def load_model(original_image):
     # img_show = tf.squeeze(img_array , axis=None, name=None)
     predicted_class = class_names[np.argmax(score)]
 
-    st.write(f"This image most likely belongs to {predicted_class}")
+    # st.write(f"This image most likely belongs to {predicted_class}")
       
     percentages = [i * 100 for i in predictions.tolist()[0]]
     results = zip(class_names, percentages)
@@ -130,10 +130,10 @@ if uploaded_file is not None:
         
         predicted_class_cropped, top3_cropped = load_model(cropped)
 
-        for i in top3:
-            st.write(i)
+        # for i in top3:
+        #     st.write(i)
         
-        st.write("Cropped")
+        st.write("Cropped Photo Predictions")
         for i in top3_cropped:
             st.write(i)
         
