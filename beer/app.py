@@ -54,7 +54,7 @@ def load_model(original_image):
     img_array = tf.expand_dims(img_array, 0) # Create a batch
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
-    img_show = tf.squeeze(img_array , axis=None, name=None)
+    # img_show = tf.squeeze(img_array , axis=None, name=None)
     predicted_class = class_names[np.argmax(score)]
 
     st.write(f"This image most likely belongs to {predicted_class}")
@@ -113,7 +113,7 @@ if uploaded_file is not None:
         except:
           pass
     else:
-        col1.image(Image.open(uploaded_file))
+        # col1.image(Image.open(uploaded_file))
         
         col1.write("")
         original_image = Image.open(uploaded_file).convert("RGB")
@@ -121,7 +121,7 @@ if uploaded_file is not None:
         
         ## Test Cropping
         width, height = original_image.size
-        cropped = ImageOps.crop(original_image, border=width*0.2)
+        cropped = ImageOps.crop(original_image, border=width*0.2).resize([336,448])
         col1.image(cropped)
         cropped.save("./sample/test_cropped.jpg")
         ## Test Cropping
@@ -158,7 +158,7 @@ if uploaded_file is not None:
     timestr = time.strftime("%Y%m%d-%H%M%S")
     
     if sample != True:
-        col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=predicted_class))
+        col2.header("Is this {pronoun} {beer_class}?".format(pronoun = "a" if predicted_class[0].lower() not in ['a','e','i','o','u'] else "an", beer_class=predicted_class_cropped))
         col2.text(f"Confidence: {top3[0][1]}")
         if col2.button("Yes"):
             col2.text("Thank you!")
