@@ -119,9 +119,10 @@ if uploaded_file is not None:
         original_image = Image.open(uploaded_file).convert("RGB")
         original_image.save("./sample/test.jpg")
         
+        fixed_image = ImageOps.exif_transpose(original_image)
         ## Test Cropping
-        width, height = original_image.size
-        cropped = ImageOps.crop(original_image, border=width*0.2).resize([336,448])
+        width, height = fixed_image.size
+        cropped = ImageOps.crop(fixed_image, border=width*0.2).resize([336,448])
         col1.image(cropped)
         cropped.save("./sample/test_cropped.jpg")
         ## Test Cropping
