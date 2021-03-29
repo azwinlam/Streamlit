@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Mar 24 18:56:09 2021
-
-@author: azwin
-"""
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -60,7 +54,7 @@ def load_model(original_image):
     img_array = tf.expand_dims(img_array, 0) # Create a batch
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
-    # img_show = tf.squeeze(img_array , axis=None, name=None)
+    img_show = tf.squeeze(img_array , axis=None, name=None)
     predicted_class = class_names[np.argmax(score)]
 
     st.write(f"This image most likely belongs to {predicted_class}")
@@ -90,8 +84,9 @@ def load_model(original_image):
 #     # st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
 #     return base, len(matches)/len(beer_list[base][1])  
 
-st.title("Beer Price Check V7 CNN")
+st.title("Beer Price Check V8 Parallel CNN")
 st.subheader("By Alex, Azwin, Jason")
+st.text("PARALLEL_MAR27NIGHTv1_962")
 
 uploaded_file = st.file_uploader("Upload Image of Beer Logo")
 
@@ -102,13 +97,12 @@ if uploaded_file is None:
         image_path = "./sample/blueicetest1.jpg"
         st.write('Sample Loaded')
         sample = Image.open(image_path)
-        sample = sample.resize([336,448])
         col1.image(sample)
         uploaded_file = True
         sample = True
 
 ## Model Loading
-model = tf.keras.models.load_model('MAR25AFTERNOON.h5')
+model = tf.keras.models.load_model('PARALLEL_MAR27NIGHTv1_962.h5')
 class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona Extra', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'San Mig', 'San Miguel', 'Skol Beer', 'Sol', 'Stella Artois', 'Tiger', 'Tsingtao Beer', 'Yanjing Beer']
 
 if uploaded_file is not None:
@@ -119,14 +113,28 @@ if uploaded_file is not None:
         except:
           pass
     else:
-        col1.image(Image.open(uploaded_file).resize([336,448]))
+        col1.image(Image.open(uploaded_file))
         
         col1.write("")
         original_image = Image.open(uploaded_file).convert("RGB")
         original_image.save("./sample/test.jpg")
+        
+        ## Test Cropping
+        width, height = original_image.size
+        cropped = ImageOps.crop(original_image, border=width*0.2)
+        col1.image(cropped)
+        cropped.save("./sample/test_cropped.jpg")
+        ## Test Cropping
+        
         predicted_class, top3 = load_model(original_image)
+        
+        predicted_class_cropped, top3_cropped = load_model(cropped)
 
         for i in top3:
+            st.write(i)
+        
+        st.write("Cropped")
+        for i in top3_cropped:
             st.write(i)
         
         # st.write(top3[0][1])
