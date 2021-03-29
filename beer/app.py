@@ -60,7 +60,7 @@ def load_model(original_image):
     img_array = tf.expand_dims(img_array, 0) # Create a batch
     predictions = model.predict(img_array)
     score = tf.nn.softmax(predictions[0])
-    img_show = tf.squeeze(img_array , axis=None, name=None)
+    # img_show = tf.squeeze(img_array , axis=None, name=None)
     predicted_class = class_names[np.argmax(score)]
 
     st.write(f"This image most likely belongs to {predicted_class}")
@@ -102,6 +102,7 @@ if uploaded_file is None:
         image_path = "./sample/blueicetest1.jpg"
         st.write('Sample Loaded')
         sample = Image.open(image_path)
+        sample = sample.resize([336,448])
         col1.image(sample)
         uploaded_file = True
         sample = True
@@ -118,7 +119,7 @@ if uploaded_file is not None:
         except:
           pass
     else:
-        col1.image(Image.open(uploaded_file))
+        col1.image(Image.open(uploaded_file).resize([336,448]))
         
         col1.write("")
         original_image = Image.open(uploaded_file).convert("RGB")
