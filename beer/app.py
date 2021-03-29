@@ -96,7 +96,7 @@ if uploaded_file is None:
     if st.button('Load Demo'):
         image_path = "./sample/blueicetest1.jpg"
         st.write('Sample Loaded')
-        sample = Image.open(image_path)
+        sample = Image.open(image_path).resize([336,448])
         col1.image(sample)
         uploaded_file = True
         sample = True
