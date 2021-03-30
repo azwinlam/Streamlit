@@ -32,6 +32,12 @@ import pickle
 #COUNTER FOR IMAGES CORRECTLY IDENTIFIED
 count_pickle = pickle.load( open( "counter.p", "rb" ) )
 
+## Sidebar
+st.sidebar.subheader("Brands of Beers Trained")
+st.sidebar.text("'Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona Extra', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'San Mig', 'San Miguel', 'Skol Beer', 'Sol', 'Stella Artois', 'Tiger', 'Tsingtao Beer', 'Yanjing Beer'")
+
+##
+
 
 st.set_page_config(
     page_title="Beer Price Checker!",
