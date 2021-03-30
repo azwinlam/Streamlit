@@ -42,7 +42,7 @@ st.set_page_config(
     )
 
 ## Sidebar
-st.sidebar.subheader("Brands of Beers Trained")
+st.sidebar.subheader("Brands of Beer Trained")
 st.sidebar.text("""
     Asahi
     Blue Girl
@@ -62,6 +62,10 @@ st.sidebar.text("""
     Tiger
     Tsingtao Beer
     Yanjing Beer""")
+st.sidebar.subheader("Example of Good Image")
+
+example = Image.open(".\logo\coronasample.jpeg").resize([168,224])
+st.image(example)
 
 ##
 
