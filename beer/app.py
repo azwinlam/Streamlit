@@ -86,7 +86,7 @@ def load_model(original_image):
 
 st.title("Beer Price Check V8 Parallel CNN")
 st.subheader("By Alex, Azwin, Jason")
-st.text("PARALLEL_MAR27NIGHTv1_962")
+st.text("SINGLE_MAR30MORN_9888.h5")
 
 uploaded_file = st.file_uploader("Upload Image of Beer Logo")
 
@@ -102,7 +102,7 @@ if uploaded_file is None:
         sample = True
 
 ## Model Loading
-model = tf.keras.models.load_model('PARALLEL_MAR27NIGHTv1_962.h5')
+model = tf.keras.models.load_model('SINGLE_MAR30MORN_9888.h5')
 class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona Extra', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'San Mig', 'San Miguel', 'Skol Beer', 'Sol', 'Stella Artois', 'Tiger', 'Tsingtao Beer', 'Yanjing Beer']
 
 if uploaded_file is not None:
