@@ -84,7 +84,7 @@ def load_model(original_image):
 #     # st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
 #     return base, len(matches)/len(beer_list[base][1])  
 
-st.title("Beer Price Check V8 Parallel CNN")
+st.title("Beer Price Check V9 Single CNN")
 st.subheader("By Alex, Azwin, Jason")
 st.text("SINGLE_MAR30MORN_9888.h5")
 
