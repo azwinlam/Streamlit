@@ -64,7 +64,7 @@ st.sidebar.text("""
     Yanjing Beer""")
 st.sidebar.subheader("Example of Good Image")
 
-example = Image.open(".\logo\coronasample.jpeg").resize([168,224])
+example = Image.open("./logo/coronasample.jpeg").resize([168,224])
 st.image(example)
 
 ##
