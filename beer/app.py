@@ -4,12 +4,12 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image, ImageOps
-import cv2 
-import re
-from os.path import join
-from glob import glob
+# import cv2 
+# import re
+# from os.path import join
+# from glob import glob
 import time
-
+import pickle
 
 # def load_logo():
 #     files = []
@@ -27,6 +27,10 @@ import time
 #     return beer_list
 
 # beer_list = load_logo()
+
+
+#COUNTER FOR IMAGES CORRECTLY IDENTIFIED
+count_pickle = pickle.load( open( "counter.p", "rb" ) )
 
 
 st.set_page_config(
@@ -86,7 +90,8 @@ def load_model(original_image):
 
 st.title("Beer Price Check V9 Single CNN")
 st.subheader("By Alex, Azwin, Jason")
-st.text("SINGLE_MAR30MORN_9888.h5")
+
+st.text(f"{sum(count_pickle)} Beers Identified Correctly")
 
 uploaded_file = st.file_uploader("Upload Image of Beer Logo")
 
@@ -164,13 +169,17 @@ if uploaded_file is not None:
         if col2.button("Yes"):
             col2.text("Thank you!")
             correct = "True"
+            count_pickle.append(1)
             original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
     
         if col2.button("No"):
             col2.text("Please take a photo with focus on the logo")
             correct = "False"
             original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
-
+            count_pickle.append(0)    
         if correct != "True" and correct != "False":
             original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
     
+pickle.dump( count_pickle, open( "counter.p", "wb" ) )
+st.text("Modle Version: SINGLE_MAR30MORN_9888.h5")
+st.text(f"{sum(count_pickle)/len(count_pickle) * 100}%")
