@@ -65,7 +65,7 @@ st.sidebar.text("""
 st.sidebar.subheader("Example of Good Image")
 
 example = Image.open("./logo/coronasample.jpeg").resize([168,224])
-st.image(example)
+st.sidebar.image(example)
 
 ##
 
@@ -120,7 +120,7 @@ def load_model(original_image):
 #     # st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
 #     return base, len(matches)/len(beer_list[base][1])  
 
-st.title("Beer Price Check V9 Single CNN")
+st.title("Beer Price Check")
 st.subheader("By Alex, Azwin, Jason")
 
 st.text(f"{sum(count_pickle)} Beers Identified Correctly")
