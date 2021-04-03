@@ -4,12 +4,12 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image, ImageOps
-import cv2 
-import re
-from os.path import join
-from glob import glob
+# import cv2 
+# import re
+# from os.path import join
+# from glob import glob
 import time
-
+import pickle
 
 # def load_logo():
 #     files = []
@@ -29,11 +29,47 @@ import time
 # beer_list = load_logo()
 
 
+#COUNTER FOR IMAGES CORRECTLY IDENTIFIED
+count_pickle = pickle.load( open( "counter.p", "rb" ) )
+
+
+
+
 st.set_page_config(
     page_title="Beer Price Checker!",
     layout="wide",
     initial_sidebar_state="expanded",
     )
+
+## Sidebar
+st.sidebar.subheader("Brands of Beer Trained")
+st.sidebar.text("""
+    Asahi
+    Blue Girl
+    Blue Ice
+    Budweiser
+    Carlsberg
+    Corona Extra
+    Guinness
+    Heineken
+    Kingway
+    Kirin
+    San Mig
+    San Miguel
+    Skol Beer
+    Sol
+    Stella Artois
+    Tiger
+    Tsingtao Beer
+    Yanjing Beer""")
+st.sidebar.subheader("Example of Good Image")
+
+example = Image.open("./logo/coronasample.jpeg").resize([168,224])
+st.sidebar.image(example)
+
+##
+
+
 
 @st.cache
 def load_csv():
@@ -84,9 +120,10 @@ def load_model(original_image):
 #     # st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
 #     return base, len(matches)/len(beer_list[base][1])  
 
-st.title("Beer Price Check V8 Parallel CNN")
+st.title("Beer Price Check")
 st.subheader("By Alex, Azwin, Jason")
-st.text("PARALLEL_MAR27NIGHTv1_962")
+
+st.text(f"{sum(count_pickle)} Beers Identified Correctly")
 
 uploaded_file = st.file_uploader("Upload Image of Beer Logo")
 
@@ -102,7 +139,7 @@ if uploaded_file is None:
         sample = True
 
 ## Model Loading
-model = tf.keras.models.load_model('PARALLEL_MAR27NIGHTv1_962.h5')
+model = tf.keras.models.load_model('SINGLE_MAR30MORN_9888.h5')
 class_names = ['Asahi', 'Blue Girl', 'Blue Ice', 'Budweiser', 'Carlsberg', 'Corona Extra', 'Guinness', 'Heineken', 'Kingway', 'Kirin', 'San Mig', 'San Miguel', 'Skol Beer', 'Sol', 'Stella Artois', 'Tiger', 'Tsingtao Beer', 'Yanjing Beer']
 
 if uploaded_file is not None:
@@ -164,13 +201,16 @@ if uploaded_file is not None:
         if col2.button("Yes"):
             col2.text("Thank you!")
             correct = "True"
+            count_pickle.append(1)
             original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
     
         if col2.button("No"):
             col2.text("Please take a photo with focus on the logo")
             correct = "False"
             original_image = original_image.save(f"./pictures/{correct}_{predicted_class}_{timestr}.jpg")
-
+            count_pickle.append(0)    
         if correct != "True" and correct != "False":
             original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
     
+pickle.dump( count_pickle, open( "counter.p", "wb" ) )
+st.text(f"Model Version: SINGLE_MAR30MORN_9888.h5 {sum(count_pickle)/len(count_pickle) * 100}%")
