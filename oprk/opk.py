@@ -40,9 +40,6 @@ else:
 pick_cuisine = st.sidebar.selectbox(
         'Pick Cuisine:', cuisine_array)
 
-#Recommendation Side Bar
-if st.sidebar.button('Recommend Me'):
-    st.sidebar.write("Coming Soon!!!")
 
 if pick_district == "All District" and pick_cuisine == "All Cuisine":
     df_temp = df.iloc[:,:]
