@@ -213,4 +213,4 @@ if uploaded_file is not None:
             original_image = original_image.save(f"./pictures/None_{predicted_class}_{timestr}.jpg")
     
 pickle.dump( count_pickle, open( "counter.p", "wb" ) )
-st.text(f"Model Version: SINGLE_MAR30MORN_9888.h5 {round(sum(count_pickle)/len(count_pickle) * 100},2)%")
+st.text(f"Model Version: SINGLE_MAR30MORN_9888.h5 {round(sum(count_pickle)/len(count_pickle) * 100,2)}%")
