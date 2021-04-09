@@ -120,7 +120,7 @@ def load_model(original_image):
 #     # st.write(f"Percent Match: {round(len(matches)/len(beer_list[base][1])*100,2)} ")
 #     return base, len(matches)/len(beer_list[base][1])  
 
-st.title("Beer Price Check")
+st.title("Beer Price Checker")
 st.subheader("By Alex, Azwin, Jason")
 
 st.text(f"{sum(count_pickle)} Beers Identified Correctly")
