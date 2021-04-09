@@ -146,7 +146,7 @@ if uploaded_file is not None:
     if sample == True:
         try:
             original_image = Image.open(image_path)
-            predicted_class, top3 = load_model(original_image)
+            predicted_class_cropped, top3 = load_model(original_image)
         except:
           pass
     else:
